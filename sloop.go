@@ -18,7 +18,7 @@ import (
 )
 
 // Version of current dawn package
-const Version = "0.3.6"
+const Version = "0.3.8"
 
 // Config is a struct holding the sloop settings.
 type Config struct {
