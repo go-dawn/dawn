@@ -1,0 +1,7 @@
+Debug = true
+
+[Daemon]
+Enable = true
+Tries = 10
+StdoutLogFile = "./daemon.log"
+StderrLogFile = "./daemon.err"

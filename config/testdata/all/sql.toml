@@ -1,0 +1,47 @@
+Default = "testing"
+
+[Connections]
+[Connections.testing]
+Driver = "sqlite3"
+Database = ":memory:"
+Prefix = "dawn_"
+Log = true
+
+[Connections.sqlite3]
+Driver = "sqlite3"
+Preload = false
+Database = "./data/database.sqlite"
+Prefix = "dawn_"
+
+[Connections.mysql]
+Preload = false
+Driver = "mysql"
+Host = "127.0.0.1"
+Port = "3306"
+Database = "forge"
+Username = "root"
+Password = ""
+Location = "Asia/Shanghai"
+Charset = "utf8mb4"
+ParseTime = true
+Prefix = "dawn_"
+
+[Connections.postgres]
+Preload = false
+Driver = "postgres"
+Host = "127.0.0.1"
+Port = "5432"
+Database = "forge"
+Username = "root"
+Password = ""
+Prefix = "dawn_"
+
+[Connections.mssql]
+Preload = false
+Driver = "mssql"
+Host = "127.0.0.1"
+Port = "1433"
+Database = "forge"
+Username = "root"
+Password = ""
+Prefix = "dawn_"

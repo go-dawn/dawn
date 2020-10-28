@@ -1,0 +1,40 @@
+[Sql]
+Default = "testing"
+
+[Sql.Connections]
+[Sql.Connections.Testing]
+Driver = "sqlite"
+Database = "file:dawn?mode=memory&cache=shared&_fk=1"
+Prefix = "dawn_"
+Log = true
+
+[Sql.Connections.Mysql]
+Driver = "mysql"
+Username = "username"
+Password = "password"
+Host = "127.0.0.1"
+Port = "3306"
+Database = "database"
+Location = "Asia/Shanghai"
+Charset = "utf8mb4"
+ParseTime = true
+Prefix = "dawn_"
+Log = false
+MaxIdleConns = 10
+MaxOpenConns = 100
+ConnMaxLifetime = "5m"
+
+[Sql.Connections.Postgres]
+Driver = "postgres"
+Host = "127.0.0.1"
+Port = "5432"
+Database = "database"
+Username = "username"
+Password = "password"
+Sslmode = "disable"
+TimeZone = "Asia/Shanghai"
+Prefix = "dawn_"
+Log = false
+MaxIdleConns = 10
+MaxOpenConns = 100
+ConnMaxLifetime = "5m"

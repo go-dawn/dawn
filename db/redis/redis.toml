@@ -1,0 +1,20 @@
+[Redis]
+Default = "default"
+
+[Redis.Connections]
+[Redis.Connections.default]
+Network = "tcp"
+Addr = "127.0.0.1:6379"
+Username = ""
+Password = ""
+DB = 0
+MaxRetries = 5
+DialTimeout = "5s"
+ReadTimeout = "5s"
+WriteTimeout = "5s"
+PoolSize = 1024
+MinIdleConns = 10
+MaxConnAge = "1m"
+PoolTimeout = "1m"
+IdleTimeout = "1m"
+IdleCheckFrequency = "1m"
