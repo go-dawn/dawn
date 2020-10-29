@@ -53,10 +53,7 @@ func New(config ...Config) *Sloop {
 }
 
 // Default returns an Sloop instance with the
-// - RequestID
-// - Logger
-// - Recovery
-// - Pprof
+// `RequestID`, `Logger`, `Recovery`, `Pprof`
 // middleware already attached in default fiber app.
 func Default(cfg ...fiber.Config) *Sloop {
 	c := fiber.Config{}
@@ -187,7 +184,7 @@ func (s *Sloop) Cleanup() {
 	}
 }
 
-// Watch listens to signal to exit
+// Watch listens to signals and waits to exit
 func (s *Sloop) Watch() {
 	if config.GetBool("daemon.enable") {
 		daemon.Run()
