@@ -7,12 +7,9 @@ import (
 	"strings"
 	"time"
 
-	jsoniter "github.com/json-iterator/go"
-
-	"github.com/gofiber/fiber/v2"
-
 	"github.com/go-dawn/dawn/config"
 	"github.com/jinzhu/copier"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
 	"gorm.io/gorm"
 )
@@ -35,8 +32,8 @@ type Pagination struct {
 
 // Paginate gets pagination based on index query and transfer
 // dao to domain object
-func Paginate(scope *gorm.DB, c *fiber.Ctx, daos, data interface{}) (*Pagination, error) {
-	q := indexQuery{c.Context().QueryArgs()}
+func Paginate(scope *gorm.DB, args *fasthttp.Args, daos, data interface{}) (*Pagination, error) {
+	q := indexQuery{args}
 
 	page, pageSize := q.pageInfo()
 

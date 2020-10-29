@@ -6,14 +6,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/valyala/fasthttp"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-
-	"github.com/gofiber/fiber/v2"
-
-	"github.com/stretchr/testify/assert"
-	"github.com/valyala/fasthttp"
 )
 
 func Test_Gormx_Paginate(t *testing.T) {
@@ -21,10 +18,7 @@ func Test_Gormx_Paginate(t *testing.T) {
 
 	gdb := mockGdb(t)
 
-	app := fiber.New()
-	fctx := &fasthttp.RequestCtx{}
-
-	ctx := app.AcquireCtx(fctx)
+	args := fasthttp.AcquireArgs()
 
 	type Data struct {
 		ID        uint32    `json:"id"`
@@ -33,18 +27,17 @@ func Test_Gormx_Paginate(t *testing.T) {
 		F         string    `json:"f"`
 	}
 
-	fctx.Request.URI().SetQueryString("page=1")
-	p, err := Paginate(gdb, ctx, &[]Fake{}, &[]Data{})
+	args.Set("page", "1")
+	p, err := Paginate(gdb, args, &[]Fake{}, &[]Data{})
 	at.NotNil(err)
 
 	at.Nil(gdb.AutoMigrate(&Fake{}))
 	fakers := []Fake{{F: "f0"}, {F: "f1"}, {F: "f2"}}
 	at.Nil(gdb.Create(&fakers).Error)
 
-	fctx.Request.URI().Reset()
-	fctx.Request.URI().SetQueryString("pageSize=2")
-
-	p, err = Paginate(gdb, ctx, &[]Fake{}, &[]Data{})
+	args.Reset()
+	args.Set("pageSize", "2")
+	p, err = Paginate(gdb, args, &[]Fake{}, &[]Data{})
 
 	at.Nil(err)
 	at.Equal(1, p.Page)
