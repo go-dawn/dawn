@@ -5,7 +5,6 @@ import (
 
 	"github.com/go-dawn/dawn/gormx/schema"
 	"github.com/stretchr/testify/assert"
-
 	"github.com/valyala/fasthttp"
 )
 

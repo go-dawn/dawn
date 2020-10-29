@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/go-dawn/dawn/config"
-
 	"github.com/valyala/fasthttp"
 )
 
