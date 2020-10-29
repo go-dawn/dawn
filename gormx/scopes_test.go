@@ -1,28 +1,43 @@
 package gormx
 
 import (
+	"context"
 	"fmt"
 	"testing"
 	"time"
+
+	"gorm.io/gorm/logger"
 
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-type Fake struct{ gorm.Model }
+type Fake struct {
+	Dao
+	F string
+}
 
-func MockGdb(t assert.TestingT) *gorm.DB {
+func MockGdb(t assert.TestingT, dst ...interface{}) *gorm.DB {
 	db, err := gorm.Open(
 		sqlite.Open(fmt.Sprintf("file:%d?mode=memory&cache=shared&_fk=1", time.Now().UnixNano())),
-		&gorm.Config{DryRun: true})
+		&gorm.Config{Logger: disabledLogger{}})
 
 	assert.Nil(t, err)
+
+	if len(dst) > 0 {
+		assert.Nil(t, db.AutoMigrate(dst...))
+	}
+
 	return db
 }
 
+func DryRunSession(t assert.TestingT) *gorm.DB {
+	return MockGdb(t).Session(&gorm.Session{DryRun: true})
+}
+
 func Test_Scope_Paginate(t *testing.T) {
-	gdb := MockGdb(t)
+	gdb := DryRunSession(t)
 
 	t.Run("int", func(t *testing.T) {
 		stat := gdb.Scopes(ScopePaginate(1, 10)).Find(&Fake{}).Statement
@@ -38,7 +53,7 @@ func Test_Scope_Paginate(t *testing.T) {
 }
 
 func Test_Scope_Search(t *testing.T) {
-	gdb := MockGdb(t)
+	gdb := DryRunSession(t)
 
 	t.Run("empty object", func(t *testing.T) {
 		stat := gdb.Scopes(ScopeSearch([]byte(`{}`))).Find(&Fake{}).Statement
@@ -111,7 +126,7 @@ func Test_Scope_Search(t *testing.T) {
 }
 
 func Benchmark_Scope_Search(b *testing.B) {
-	gdb := MockGdb(b)
+	gdb := DryRunSession(b)
 
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -124,7 +139,7 @@ func Benchmark_Scope_Search(b *testing.B) {
 }
 
 func Test_Scope_Sort(t *testing.T) {
-	gdb := MockGdb(t)
+	gdb := DryRunSession(t)
 
 	t.Run("no sort", func(t *testing.T) {
 		stat := gdb.Scopes(ScopeSort([]byte(""))).Find(&Fake{}).Statement
@@ -150,3 +165,15 @@ func Test_Scope_Sort(t *testing.T) {
 		assert.Equal(t, "SELECT * FROM `fakes` WHERE `fakes`.`deleted_at` IS NULL ORDER BY name desc,key", stat.SQL.String())
 	})
 }
+
+var l disabledLogger
+
+type disabledLogger struct{}
+
+func (disabledLogger) LogMode(logger.LogLevel) logger.Interface {
+	return disabledLogger{}
+}
+func (disabledLogger) Info(context.Context, string, ...interface{})                    {}
+func (disabledLogger) Warn(context.Context, string, ...interface{})                    {}
+func (disabledLogger) Error(context.Context, string, ...interface{})                   {}
+func (disabledLogger) Trace(context.Context, time.Time, func() (string, int64), error) {}

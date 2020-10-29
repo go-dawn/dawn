@@ -14,7 +14,7 @@ type Dao struct {
 	ID        uint32 `gorm:"primary_key"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+	DeletedAt *gorm.DeletedAt `sql:"index"`
 }
 
 // Fields alias for map[string]interface
@@ -67,7 +67,7 @@ func (q IndexQuery) PageInfo() (int, int) {
 // and list data
 type Pagination struct {
 	Page     int         `json:"page"`
-	PageSize int         `json:"pageSize"`
+	PageSize int         `json:"page_size"`
 	Total    int         `json:"total"`
 	Data     interface{} `json:"data"`
 }
