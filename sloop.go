@@ -24,20 +24,6 @@ const Version = "0.3.8"
 type Config struct {
 	// App indicates to fiber app instance
 	App *fiber.App
-
-	// Daemon indicates if dawn app run in daemon mode
-	Daemon bool
-	// Tries is the max count to start dawn app in daemon
-	// mode when error occurs. Default value is 10.
-	Tries int
-	// StdoutLogFile is the path to write stdout logs
-	// in daemon mode. If not set, all stdout logs is
-	// directed to os.Stdout
-	StdoutLogFile string
-	// StderrLogFile is the path to write stderr logs.
-	// in daemon mode. If not set, all stdout logs is
-	// directed to os.Stderr
-	StderrLogFile string
 }
 
 // Sloop denotes Dawn application
@@ -67,10 +53,7 @@ func New(config ...Config) *Sloop {
 }
 
 // Default returns an Sloop instance with the
-// - RequestID
-// - Logger
-// - Recovery
-// - Pprof
+// `RequestID`, `Logger`, `Recovery`, `Pprof`
 // middleware already attached in default fiber app.
 func Default(cfg ...fiber.Config) *Sloop {
 	c := fiber.Config{}
@@ -201,7 +184,7 @@ func (s *Sloop) Cleanup() {
 	}
 }
 
-// Watch listens to signal to exit
+// Watch listens to signals and waits to exit
 func (s *Sloop) Watch() {
 	if config.GetBool("daemon.enable") {
 		daemon.Run()
