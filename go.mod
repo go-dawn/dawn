@@ -10,7 +10,9 @@ require (
 	github.com/go-playground/validator/v10 v10.3.0
 	github.com/go-redis/redis/v8 v8.1.3
 	github.com/gofiber/fiber/v2 v2.1.1
+	github.com/jinzhu/copier v0.0.0-20201025035756-632e723a6687
 	github.com/joho/godotenv v1.3.0
+	github.com/json-iterator/go v1.1.6
 	github.com/kiyonlin/klog v1.1.1
 	github.com/klauspost/compress v1.11.1 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
