@@ -3,9 +3,9 @@ package gormx
 import (
 	"testing"
 
+	"github.com/go-dawn/dawn/gormx/schema"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/kiyonlin/dawn/schema"
 	"github.com/valyala/fasthttp"
 )
 
