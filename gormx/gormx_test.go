@@ -3,7 +3,6 @@ package gormx
 import (
 	"testing"
 
-	"github.com/go-dawn/dawn/gormx/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/valyala/fasthttp"
 )
@@ -15,7 +14,7 @@ func Test_Gormx_Paginate(t *testing.T) {
 
 	type data struct{}
 
-	p, err := Paginate(gdb, schema.NewIndexQuery(fasthttp.AcquireArgs()), &Fake{}, &data{})
+	p, err := Paginate(gdb, NewIndexQuery(fasthttp.AcquireArgs()), &Fake{}, &data{})
 
 	at.Nil(err)
 	at.Equal(1, p.Page)
