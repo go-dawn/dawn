@@ -12,7 +12,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.1.1
 	github.com/jinzhu/copier v0.0.0-20201025035756-632e723a6687
 	github.com/joho/godotenv v1.3.0
-	github.com/json-iterator/go v1.1.6
+	github.com/json-iterator/go v1.1.10
 	github.com/kiyonlin/klog v1.1.1
 	github.com/klauspost/compress v1.11.1 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
