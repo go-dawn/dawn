@@ -9,7 +9,6 @@ import (
 	"syscall"
 
 	"github.com/go-dawn/dawn/config"
-	"github.com/go-dawn/dawn/daemon"
 	"github.com/go-dawn/dawn/fiberx"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/pprof"
@@ -96,10 +95,6 @@ func (s *Sloop) Run(addr string) error {
 
 	s.Setup().registerRoutes()
 
-	if config.GetBool("daemon.enable") {
-		daemon.Run()
-	}
-
 	return s.app.Listen(addr)
 }
 
@@ -127,10 +122,6 @@ func (s *Sloop) RunTls(addr, certFile, keyFile string) error {
 	}
 
 	s.Setup().registerRoutes()
-
-	if config.GetBool("daemon.enable") {
-		daemon.Run()
-	}
 
 	return s.app.Listener(ln)
 }
@@ -186,10 +177,6 @@ func (s *Sloop) Cleanup() {
 
 // Watch listens to signals and waits to exit
 func (s *Sloop) Watch() {
-	if config.GetBool("daemon.enable") {
-		daemon.Run()
-	}
-
 	signal.Notify(s.sigCh,
 		syscall.SIGTERM, syscall.SIGINT,
 		syscall.SIGHUP, syscall.SIGQUIT)
