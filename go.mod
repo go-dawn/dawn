@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/andybalholm/brotli v1.0.1 // indirect
+	github.com/go-dawn/pkg v0.0.2
 	github.com/go-logr/logr v0.2.1 // indirect
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0

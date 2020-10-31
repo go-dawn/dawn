@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-dawn/dawn/config"
+	"github.com/go-dawn/pkg/deck"
 )
 
 const envDaemon = "DAWN_DAEMON"
@@ -16,7 +17,9 @@ const envDaemonWorker = "DAWN_DAEMON_WORKER"
 
 var stdoutLogFile *os.File
 var stderrLogFile *os.File
-var osExit = os.Exit
+var normalRunningTime = time.Second * 10
+var osExit = deck.OsExit
+var execCommand = deck.ExecCommand
 
 func Run() {
 	if isWorker() {
@@ -31,6 +34,10 @@ func Run() {
 	setupLogFiles()
 	defer teardownLogFiles()
 
+	run()
+}
+
+func run() {
 	var (
 		cmd    *exec.Cmd
 		err    error
@@ -54,7 +61,7 @@ func Run() {
 
 		logger.Printf("dawn: (pid:%d)%v exist with err: %v", cmd.Process.Pid, cmd.Args, err)
 
-		if time.Since(start) > time.Second*10 {
+		if time.Since(start) > normalRunningTime {
 			// reset count
 			count = 0
 		}
@@ -72,12 +79,9 @@ func spawn(skip bool) (cmd *exec.Cmd, err error) {
 
 	args, env := setupArgsAndEnv()
 
-	cmd = &exec.Cmd{
-		Path:        args[0],
-		Args:        args,
-		Env:         env,
-		SysProcAttr: newSysProcAttr(),
-	}
+	cmd = execCommand(args[0], args[1:]...)
+	cmd.Env = append(cmd.Env, env...)
+	cmd.SysProcAttr = newSysProcAttr()
 
 	if isDaemon() {
 		if stdoutLogFile != nil {
