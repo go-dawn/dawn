@@ -176,6 +176,8 @@ func Test_Fiberx_ValidateQuery(t *testing.T) {
 }
 
 func Test_Fiberx_2xx(t *testing.T) {
+	t.Parallel()
+
 	tt := []struct {
 		code int
 		fn   func(c *fiber.Ctx, msg ...string) error
@@ -193,8 +195,6 @@ func Test_Fiberx_2xx(t *testing.T) {
 
 	for _, tc := range tt {
 		t.Run(strconv.Itoa(tc.code), func(t *testing.T) {
-			t.Parallel()
-
 			fn := tc.fn
 			app := fiber.New()
 			app.Get("/", func(c *fiber.Ctx) error {
