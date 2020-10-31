@@ -1,8 +1,6 @@
 package main
 
 import (
-	"flag"
-
 	"github.com/go-dawn/dawn"
 	"github.com/go-dawn/dawn/config"
 	"github.com/go-dawn/dawn/db/redis"
@@ -12,14 +10,10 @@ import (
 
 func main() {
 	config.Load("./_examples/application")
-	config.LoadEnv()
-
-	log.InitFlags(nil)
-	flag.Parse()
-	defer log.Flush()
 
 	sloop := dawn.New().
 		AddModulers(
+			log.New(nil),
 			sql.New(),
 			redis.New(),
 			// add custom module
