@@ -4,8 +4,32 @@ import (
 	"flag"
 	"io"
 
+	"github.com/go-dawn/dawn"
 	"github.com/kiyonlin/klog"
 )
+
+type logModule struct {
+	dawn.Module
+	flagset *flag.FlagSet
+}
+
+func New(flagset *flag.FlagSet) dawn.Moduler {
+	return logModule{flagset: flagset}
+}
+
+func (m logModule) String() string {
+	return "dawn:log"
+}
+
+func (m logModule) Init() dawn.Cleanup {
+	InitFlags(m.flagset)
+
+	flag.Parse()
+
+	return func() {
+		Flush()
+	}
+}
 
 // InitFlags is for explicitly initializing the flags.
 // Default to use logs as log dir.
