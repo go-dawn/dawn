@@ -28,6 +28,12 @@ var ErrHandler = func(c *fiber.Ctx, err error) error {
 	} else if e, ok := err.(*fiber.Error); ok {
 		res.Code = e.Code
 		res.Message = e.Message
+	} else if e, ok := err.(*Error); ok {
+		res.Code = e.code
+		res.Message = e.message
+		if res.Message == "" {
+			res.Message = e.Error()
+		}
 	}
 
 	return Resp(c, res.Code, res)
@@ -62,7 +68,7 @@ func ValidateQuery(c *fiber.Ctx, obj interface{}) (err error) {
 	return V.Struct(obj)
 }
 
-// Response is a unified format for api results
+// Response is a formatted struct for api results
 type Response struct {
 	// Code is the status code by default, but also can be
 	// a custom code
@@ -73,6 +79,18 @@ type Response struct {
 	RequestID string `json:"request_id,omitempty"`
 	// Data accepts any thing as the response data
 	Data interface{} `json:"data,omitempty"`
+}
+
+// Error represents an error that occurred while handling a request.
+type Error struct {
+	code    int
+	err     error
+	message string
+}
+
+// Error makes it compatible with the `error` interface.
+func (e *Error) Error() string {
+	return e.err.Error()
 }
 
 // Resp returns the custom response
@@ -93,14 +111,55 @@ func Data(c *fiber.Ctx, data interface{}) error {
 	return Resp(c, fiber.StatusOK, Response{Data: data})
 }
 
-// Message wraps for RespOK with required message
+// Message responses with 200 and specific message
 func Message(c *fiber.Ctx, msg string) error {
-	return RespOK(c, msg)
+	return CodeMessage(c, fiber.StatusOK, msg)
 }
 
-// Messagef wraps for RespOK with required formatted message
+// Messagef responses with 200 and specific formatted message
 func Messagef(c *fiber.Ctx, format string, args ...interface{}) error {
-	return RespOK(c, fmt.Sprintf(format, args...))
+	return CodeMessagef(c, fiber.StatusOK, fmt.Sprintf(format, args...))
+}
+
+// CodeMessage responses with specific status code and message
+func CodeMessage(c *fiber.Ctx, code int, msg string) error {
+	return respCommon(c, code, msg)
+}
+
+// CodeMessagef responses with specific status code and formatted message
+func CodeMessagef(c *fiber.Ctx, code int, format string, args ...interface{}) error {
+	return CodeMessage(c, code, fmt.Sprintf(format, args...))
+}
+
+// Err creates a new internal server Error instance with an optional message
+func Err(err error, message ...string) *Error {
+	return CodeErr(fiber.StatusInternalServerError, err, message...)
+}
+
+// Errf creates a new internal server Error instance with formatted message
+func Errf(err error, format string, args ...interface{}) *Error {
+	return Err(err, fmt.Sprintf(format, args...))
+}
+
+// CodeErr creates a new Error instance with specific status code and
+// an optional message
+func CodeErr(code int, err error, message ...string) *Error {
+	e := &Error{
+		code: code,
+		err:  err,
+	}
+
+	if len(message) > 0 {
+		e.message = message[0]
+	}
+
+	return e
+}
+
+// CodeErrf creates a new Error instance with specific status code and
+// a formatted message
+func CodeErrf(code int, err error, format string, args ...interface{}) *Error {
+	return CodeErr(code, err, fmt.Sprintf(format, args...))
 }
 
 // respCommon
