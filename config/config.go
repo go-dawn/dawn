@@ -28,9 +28,25 @@ func init() {
 	global = New()
 }
 
-// New returns a new Config instance
-func New() *Config {
-	return &Config{v: viper.New()}
+// New returns a new Config instance. If a specified filePath(with or without
+// extension are both fine) is given, then read config from that file.
+func New(filePath ...string) (c *Config) {
+	c = &Config{v: viper.New()}
+
+	if len(filePath) == 0 {
+		return
+	}
+
+	fp := filepath.Clean(filePath[0])
+	dir, name, ext := filepath.Dir(fp), filepath.Base(fp), filepath.Ext(fp)
+
+	c.v.SetConfigName(strings.TrimRight(name, ext))
+	c.v.AddConfigPath(dir)
+	if err := c.v.ReadInConfig(); err != nil {
+		panic(fmt.Errorf("config: failed to read in %s: %w", fp, err))
+	}
+
+	return
 }
 
 // Load config into global environment.

@@ -35,7 +35,20 @@ type (
 	}
 )
 
-func Test_Load_Panic(t *testing.T) {
+func Test_Config_New(t *testing.T) {
+	t.Run("panic", func(t *testing.T) {
+		assert.Panics(t, func() {
+			New("./")
+		})
+	})
+
+	t.Run("success", func(t *testing.T) {
+		c := New("./testdata/all/app.toml")
+		assert.Equal(t, "dev", c.GetString("env"))
+	})
+}
+
+func Test_Config_Load_Panic(t *testing.T) {
 	t.Parallel()
 
 	assert.Panics(t, func() {
@@ -44,7 +57,7 @@ func Test_Load_Panic(t *testing.T) {
 	})
 }
 
-func Test_Load(t *testing.T) {
+func Test_Config_Load(t *testing.T) {
 	reset()
 
 	Load(configPath, configName)
@@ -54,7 +67,7 @@ func Test_Load(t *testing.T) {
 	assert.Equal(t, defaultFileStorePath, GetString("cache.file.path", defaultFileStorePath))
 }
 
-func Test_AllGetFunctions(t *testing.T) {
+func Test_Config_AllGetFunctions(t *testing.T) {
 	Load(configPath, configName)
 
 	assert.Equal(t, "iface", Get("iface"))
@@ -99,12 +112,12 @@ func Test_AllGetFunctions(t *testing.T) {
 	assert.Equal(t, []string{"s3", "s4"}, GetStringSlice(nonExistKey, []string{"s3", "s4"}))
 }
 
-func Test_AllSettings(t *testing.T) {
+func Test_Config_AllSettings(t *testing.T) {
 	reset()
 	assert.Len(t, AllSettings(), 0)
 }
 
-func Test_Unmarshal(t *testing.T) {
+func Test_Config_Unmarshal(t *testing.T) {
 	reset()
 
 	Set("S", value)
@@ -113,7 +126,7 @@ func Test_Unmarshal(t *testing.T) {
 	assert.Equal(t, value, fu.S)
 }
 
-func Test_UnmarshalKey(t *testing.T) {
+func Test_Config_UnmarshalKey(t *testing.T) {
 	reset()
 
 	Set("SubConfig.B", true)
@@ -122,22 +135,25 @@ func Test_UnmarshalKey(t *testing.T) {
 	assert.True(t, sub.B)
 }
 
-func Test_MergeConfigMap(t *testing.T) {
+func Test_Config_MergeConfigMap(t *testing.T) {
 	reset()
 
 	MergeConfigMap(mergeCfg)
 	assert.Equal(t, mergeCfg["merge"], GetString("merge"))
 }
 
-func Test_Sub(t *testing.T) {
+func Test_Config_Sub(t *testing.T) {
 	reset()
 
 	Set("SubConfig.B", true)
 	c := Sub("SubConfig")
 	assert.True(t, c.GetBool("B"))
+
+	c = Sub("non-exist")
+	assert.False(t, c.GetBool("B"))
 }
 
-func Test_Has(t *testing.T) {
+func Test_Config_Has(t *testing.T) {
 	reset()
 
 	Set("SubConfig.B", true)
@@ -147,7 +163,7 @@ func Test_Has(t *testing.T) {
 	assert.False(t, Has("B"))
 }
 
-func Test_LoadAll(t *testing.T) {
+func Test_Config_LoadAll(t *testing.T) {
 	t.Run("error", func(t *testing.T) {
 		assert.NotNil(t, LoadAll("./testdata/error"))
 	})
