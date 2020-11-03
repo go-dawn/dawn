@@ -95,6 +95,25 @@ func Test_Fiberx_ErrorHandler(t *testing.T) {
 			respBody:   `{"code":400, "message":"Bad Request"}`,
 		})
 	})
+
+	t.Run("dawn error", func(t *testing.T) {
+		t.Parallel()
+
+		app := fiber.New(fiber.Config{
+			ErrorHandler: ErrHandler,
+		})
+		app.Get("/500", func(c *fiber.Ctx) error {
+			return Err(errors.New("error"))
+		})
+
+		assertRespCase(t, respCase{
+			app:        app,
+			method:     fiber.MethodGet,
+			target:     "/500",
+			statusCode: fiber.StatusInternalServerError,
+			respBody:   `{"code":500, "message":"error"}`,
+		})
+	})
 }
 
 func Test_Fiberx_ValidateBody(t *testing.T) {
@@ -271,7 +290,7 @@ func Test_Fiberx_Logger(t *testing.T) {
 	})
 }
 
-func Test_Fiberx_Response_Message(t *testing.T) {
+func Test_Fiberx_Message(t *testing.T) {
 	t.Parallel()
 
 	app := fiber.New()
@@ -288,7 +307,62 @@ func Test_Fiberx_Response_Message(t *testing.T) {
 	})
 }
 
-func Test_Fiberx_Response_Data(t *testing.T) {
+func Test_Fiberx_Messagef(t *testing.T) {
+	t.Parallel()
+
+	app := fiber.New()
+	app.Get("/", func(c *fiber.Ctx) error {
+		return Messagef(c, "%s", "message")
+	})
+
+	assertRespCase(t, respCase{
+		app:        app,
+		method:     fiber.MethodGet,
+		target:     "/",
+		statusCode: fiber.StatusOK,
+		respBody:   `{"code":200,"message":"message"}`,
+	})
+}
+
+func Test_Fiberx_Errf(t *testing.T) {
+	t.Parallel()
+
+	app := fiber.New(fiber.Config{
+		ErrorHandler: ErrHandler,
+	})
+	app.Get("/", func(c *fiber.Ctx) error {
+		return Errf(errors.New("err"), "%s", "message")
+	})
+
+	assertRespCase(t, respCase{
+		app:        app,
+		method:     fiber.MethodGet,
+		target:     "/",
+		statusCode: fiber.StatusInternalServerError,
+		respBody:   `{"code":500,"message":"message"}`,
+	})
+}
+
+func Test_Fiberx_CodeErrf(t *testing.T) {
+	t.Parallel()
+
+	app := fiber.New(fiber.Config{
+		ErrorHandler: ErrHandler,
+	})
+	app.Get("/", func(c *fiber.Ctx) error {
+		return CodeErrf(fiber.StatusUnauthorized, errors.New("err"), "%s", "message")
+	})
+
+	assertRespCase(t, respCase{
+		app:        app,
+		method:     fiber.MethodGet,
+		target:     "/",
+		statusCode: fiber.StatusUnauthorized,
+		respBody:   `{"code":401,"message":"message"}`,
+	})
+}
+
+func Test_Fiberx_Data(t *testing.T) {
 	t.Parallel()
 
 	app := fiber.New()
