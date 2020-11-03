@@ -1,6 +1,7 @@
 package fiberx
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -95,6 +96,11 @@ func Data(c *fiber.Ctx, data interface{}) error {
 // Message wraps for RespOK with required message
 func Message(c *fiber.Ctx, msg string) error {
 	return RespOK(c, msg)
+}
+
+// Messagef wraps for RespOK with required formatted message
+func Messagef(c *fiber.Ctx, format string, args ...interface{}) error {
+	return RespOK(c, fmt.Sprintf(format, args...))
 }
 
 // respCommon
