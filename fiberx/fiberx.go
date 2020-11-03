@@ -164,7 +164,7 @@ var pid = os.Getpid()
 
 // Logger logs request and response info to os.Stdout
 // or os.Stderr. The format is:
-// time #pid[-request-id]: latency status clientIP method protocol://host_path[ error]
+// time #pid[ request-id]: latency status clientIP method protocol://host_path[ error]
 func Logger() fiber.Handler {
 	return func(ctx *fiber.Ctx) (err error) {
 		start := time.Now()
@@ -186,7 +186,7 @@ func Logger() fiber.Handler {
 
 		// append request id
 		if requestId := ctx.Response().Header.Peek(fiber.HeaderXRequestID); len(requestId) > 0 {
-			_ = bb.WriteByte('-')
+			_ = bb.WriteByte(' ')
 			_, _ = bb.Write(requestId)
 		}
 		_, _ = bb.WriteString(": ")
