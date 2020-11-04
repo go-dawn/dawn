@@ -52,7 +52,7 @@ func removeTopStruct(fields map[string]string) map[string]string {
 // and then do the validation by a validator
 func ValidateBody(c *fiber.Ctx, obj interface{}) (err error) {
 	if err := c.BodyParser(obj); err != nil {
-		return err
+		return CodeErr(fiber.StatusBadRequest, err)
 	}
 
 	return V.Struct(obj)
