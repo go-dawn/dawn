@@ -4,13 +4,13 @@ go 1.13
 
 require (
 	github.com/andybalholm/brotli v1.0.1 // indirect
-	github.com/go-dawn/pkg v0.0.2
+	github.com/go-dawn/pkg v0.0.3
 	github.com/go-logr/logr v0.2.1 // indirect
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.4.1
 	github.com/go-redis/redis/v8 v8.3.3
-	github.com/gofiber/fiber/v2 v2.1.2
+	github.com/gofiber/fiber/v2 v2.1.3
 	github.com/jinzhu/copier v0.0.0-20201025035756-632e723a6687
 	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.10
@@ -21,7 +21,6 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/valyala/bytebufferpool v1.0.0
 	github.com/valyala/fasthttp v1.16.0
-	golang.org/x/sys v0.0.0-20201027140754-0fcbb8f4928c // indirect
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/postgres v1.0.5
 	gorm.io/driver/sqlite v1.1.3
