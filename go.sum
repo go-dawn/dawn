@@ -66,6 +66,8 @@ github.com/go-dawn/dawn v0.4.2/go.mod h1:Saosp0k/kTMA8jevdaSAr0ofHWJZXqr92NvvWGs
 github.com/go-dawn/pkg v0.0.2/go.mod h1:YPEelJmDoZX5xYrHPiYPFyyk7X7BHzjHlXr99IK7sb4=
 github.com/go-dawn/pkg v0.0.3 h1:21D7p1tpWtcqeMPx7QmMTe0zUAh80bl+T9GpJIjILr8=
 github.com/go-dawn/pkg v0.0.3/go.mod h1:nJ1DXtgjlVXmmJlCc2YAUanC/2gDsjTT0EKfC3iCQSo=
+github.com/go-dawn/pkg v0.0.4-0.20201104085859-62b37379c717 h1:tXcigGAzG0ky6WTmua7IVAFTxOV8QeYWqBJ+kTxgO/I=
+github.com/go-dawn/pkg v0.0.4-0.20201104085859-62b37379c717/go.mod h1:isaSuALyoPVmiLYwP5+JXiCSbOsqdaxo0NbPEP1vEaQ=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
 github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
 github.com/go-logfmt/logfmt v0.3.0/go.mod h1:Qt1PoO58o5twSAckw1HlFXLmHsOX5/0LbT9GBnD5lWE=

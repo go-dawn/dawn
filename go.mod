@@ -3,7 +3,7 @@ module github.com/go-dawn/dawn
 go 1.13
 
 require (
-	github.com/go-dawn/pkg v0.0.3
+	github.com/go-dawn/pkg v0.0.4-0.20201104085859-62b37379c717
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.4.1
