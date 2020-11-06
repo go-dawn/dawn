@@ -11,23 +11,17 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-func Test_Sql_New(t *testing.T) {
-	t.Parallel()
-
-	moduler := New()
-	_, ok := moduler.(*sqlModule)
-	assert.True(t, ok)
-}
-
 func Test_Sql_Module_Name(t *testing.T) {
 	t.Parallel()
 
-	assert.Equal(t, "dawn:sql", m.String())
+	assert.Equal(t, "dawn:sql", New().String())
 }
 
-func Test_Sql_Init(t *testing.T) {
+func Test_Sql_Module_Init(t *testing.T) {
+	t.Parallel()
+
 	t.Run("empty config", func(t *testing.T) {
-		m.conns = map[string]*gorm.DB{}
+		m := &Module{conns: map[string]*gorm.DB{}}
 
 		at := assert.New(t)
 
@@ -38,7 +32,7 @@ func Test_Sql_Init(t *testing.T) {
 	})
 
 	t.Run("with config", func(t *testing.T) {
-		m.conns = map[string]*gorm.DB{}
+		m := &Module{conns: map[string]*gorm.DB{}}
 
 		config.Set("sql.default", "sqlite")
 		config.Set("sql.connections.sqlite", map[string]string{})
@@ -57,6 +51,8 @@ func Test_Sql_Conn(t *testing.T) {
 }
 
 func Test_Sql_connect(t *testing.T) {
+	t.Parallel()
+
 	t.Run("unknown driver", func(t *testing.T) {
 		defer func() {
 			assert.Equal(t, "dawn:sql unknown driver test of name", recover())

@@ -1,40 +1,38 @@
 package sql
 
 import (
-	"context"
 	"fmt"
 	"net/url"
 	"strings"
-	"time"
 
 	"github.com/go-dawn/dawn"
 	"github.com/go-dawn/dawn/config"
+	"github.com/go-dawn/pkg/deck"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
 )
 
 var (
-	m        = &sqlModule{conns: make(map[string]*gorm.DB)}
+	m        = &Module{}
 	fallback = "testing"
 )
 
-type sqlModule struct {
+type Module struct {
 	dawn.Module
 	conns    map[string]*gorm.DB
 	fallback string
 }
 
 // New gets the moduler
-func New() dawn.Moduler {
+func New() *Module {
 	return m
 }
 
 // String is module name
-func (*sqlModule) String() string {
+func (*Module) String() string {
 	return "dawn:sql"
 }
 
@@ -46,7 +44,9 @@ func (*sqlModule) String() string {
 //  Driver = "sqlite"
 //  [Sql.Connections.mysql]
 //  Driver = "mysql"
-func (m *sqlModule) Init() dawn.Cleanup {
+func (m *Module) Init() dawn.Cleanup {
+	m.conns = make(map[string]*gorm.DB)
+
 	// extract sql config
 	c := config.Sub("sql")
 
@@ -69,7 +69,7 @@ func (m *sqlModule) Init() dawn.Cleanup {
 }
 
 // cleanup 	close every connections
-func (m *sqlModule) cleanup() {
+func (m *Module) cleanup() {
 	for _, gdb := range m.conns {
 		if db, err := gdb.DB(); err == nil {
 			_ = db.Close()
@@ -103,24 +103,14 @@ func connect(name string, c *config.Config) (db *gorm.DB) {
 func Conn(name ...string) *gorm.DB {
 	n := m.fallback
 
-	if len(name) > 0 {
+	if len(name) > 0 && name[0] != "" {
 		n = name[0]
 	}
 
 	return m.conns[n]
 }
 
-var l disabledLogger
-
-type disabledLogger struct{}
-
-func (disabledLogger) LogMode(logger.LogLevel) logger.Interface {
-	return disabledLogger{}
-}
-func (disabledLogger) Info(context.Context, string, ...interface{})                    {}
-func (disabledLogger) Warn(context.Context, string, ...interface{})                    {}
-func (disabledLogger) Error(context.Context, string, ...interface{})                   {}
-func (disabledLogger) Trace(context.Context, time.Time, func() (string, int64), error) {}
+var l = deck.DisabledGormLogger{}
 
 // resolveSqlite resolves sqlite connection with config:
 // Driver = "sqlite"

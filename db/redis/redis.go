@@ -10,23 +10,23 @@ import (
 )
 
 var (
-	m        = &redisModule{conns: make(map[string]*redis.Client)}
+	m        = &Module{}
 	fallback = "default"
 )
 
-type redisModule struct {
+type Module struct {
 	dawn.Module
 	conns    map[string]*redis.Client
 	fallback string
 }
 
 // New gets the moduler
-func New() dawn.Moduler {
+func New() *Module {
 	return m
 }
 
 // String is module name
-func (*redisModule) String() string {
+func (*Module) String() string {
 	return "dawn:redis"
 }
 
@@ -50,7 +50,9 @@ func (*redisModule) String() string {
 //  PoolTimeout = "1m"
 //  IdleTimeout = "1m"
 //  IdleCheckFrequency = "1m"
-func (m *redisModule) Init() dawn.Cleanup {
+func (m *Module) Init() dawn.Cleanup {
+	m.conns = make(map[string]*redis.Client)
+
 	// extract redis config
 	c := config.Sub("redis")
 
@@ -64,12 +66,7 @@ func (m *redisModule) Init() dawn.Cleanup {
 		m.conns[name] = connect(name, cfg)
 	}
 
-	return func() {
-		// close every connections
-		for _, client := range m.conns {
-			_ = client.Close()
-		}
-	}
+	return m.cleanup
 }
 
 func connect(name string, c *config.Config) (client *redis.Client) {
@@ -92,17 +89,29 @@ func connect(name string, c *config.Config) (client *redis.Client) {
 		IdleCheckFrequency: c.GetDuration("IdleCheckFrequency"),
 	})
 
-	if _, err := client.Ping(context.Background()).Result(); err != nil {
-		panic(fmt.Sprintf("dawn:redis failed to ping %s(%s): %v", name, addr, err))
-	}
 	return
+}
+
+func (m *Module) Boot() {
+	for name, client := range m.conns {
+		if _, err := client.Ping(context.Background()).Result(); err != nil {
+			panic(fmt.Sprintf("dawn:redis failed to ping %s(%s): %v", name, client.Options().Addr, err))
+		}
+	}
+}
+
+func (m *Module) cleanup() {
+	// close every connections
+	for _, client := range m.conns {
+		_ = client.Close()
+	}
 }
 
 // Conn gets redis connection by specific name or fallback
 func Conn(name ...string) redis.Cmdable {
 	n := m.fallback
 
-	if len(name) > 0 {
+	if len(name) > 0 && name[0] != "" {
 		n = name[0]
 	}
 
