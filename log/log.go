@@ -8,20 +8,20 @@ import (
 	"github.com/kiyonlin/klog"
 )
 
-type logModule struct {
+type Module struct {
 	dawn.Module
 	flagset *flag.FlagSet
 }
 
-func New(flagset *flag.FlagSet) dawn.Moduler {
-	return logModule{flagset: flagset}
+func New(flagset *flag.FlagSet) *Module {
+	return &Module{flagset: flagset}
 }
 
-func (m logModule) String() string {
+func (m *Module) String() string {
 	return "dawn:log"
 }
 
-func (m logModule) Init() dawn.Cleanup {
+func (m *Module) Init() dawn.Cleanup {
 	InitFlags(m.flagset)
 
 	flag.Parse()
