@@ -16,7 +16,7 @@ require (
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.6.1
 	github.com/valyala/bytebufferpool v1.0.0
-	github.com/valyala/fasthttp v1.16.0
+	github.com/valyala/fasthttp v1.17.0
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/driver/postgres v1.0.5
 	gorm.io/driver/sqlite v1.1.3
