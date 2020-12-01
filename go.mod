@@ -8,7 +8,7 @@ require (
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.4.1
 	github.com/go-redis/redis/v8 v8.3.3
-	github.com/gofiber/fiber/v2 v2.2.0
+	github.com/gofiber/fiber/v2 v2.2.2
 	github.com/jinzhu/copier v0.0.0-20201025035756-632e723a6687
 	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.10
