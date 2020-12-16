@@ -1,7 +1,6 @@
 package dawn
 
 import (
-	"crypto/tls"
 	"errors"
 	"fmt"
 	"os"
@@ -106,24 +105,9 @@ func (s *Sloop) RunTls(addr, certFile, keyFile string) error {
 		return errors.New("dawn: app is nil")
 	}
 
-	// Create tls certificate
-	cert, err := tls.LoadX509KeyPair(certFile, keyFile)
-	if err != nil {
-		return err
-	}
-	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{cert},
-		MinVersion:   tls.VersionTLS12,
-	}
-
-	ln, err := tls.Listen("tcp", addr, tlsConfig)
-	if err != nil {
-		return err
-	}
-
 	s.Setup().registerRoutes()
 
-	return s.app.Listener(ln)
+	return s.app.ListenTLS(addr, certFile, keyFile)
 }
 
 // Shutdown gracefully shuts down the server without interrupting any active connections.
