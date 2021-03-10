@@ -20,7 +20,7 @@ require (
 	github.com/valyala/fasthttp v1.22.0
 	golang.org/x/sys v0.0.0-20210309040221-94ec62e08169 // indirect
 	gorm.io/driver/mysql v1.0.3
-	gorm.io/driver/postgres v1.0.5
+	gorm.io/driver/postgres v1.0.8
 	gorm.io/driver/sqlite v1.1.4
 	gorm.io/gorm v1.21.3
 )
