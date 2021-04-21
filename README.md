@@ -10,10 +10,10 @@
     <img src="https://codecov.io/gh/go-dawn/dawn/branch/main/graph/badge.svg?token=3VA39G2KNI"/>
   </a>
   <a href="https://github.com/go-dawn/dawn/actions?query=workflow%3ASecurity">
-    <img src="https://img.shields.io/github/workflow/status/gofiber/fiber/Security?label=%F0%9F%94%91%20gosec&style=flat&color=75C46B">
+    <img src="https://img.shields.io/github/workflow/status/go-dawn/dawn/Security?label=%F0%9F%94%91%20gosec&style=flat&color=75C46B">
   </a>
   <a href="https://github.com/go-dawn/dawn/actions?query=workflow%3ATest">
-    <img src="https://img.shields.io/github/workflow/status/gofiber/fiber/Test?label=%F0%9F%A7%AA%20tests&style=flat&color=75C46B">
+    <img src="https://img.shields.io/github/workflow/status/go-dawn/dawn/Test?label=%F0%9F%A7%AA%20tests&style=flat&color=75C46B">
   </a>
   <a>
     <img src="https://counter.gofiber.io/badge/go-dawn/dawn">
