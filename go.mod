@@ -6,7 +6,7 @@ require (
 	github.com/go-dawn/pkg v0.0.4-0.20201104085859-62b37379c717
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
-	github.com/go-playground/validator/v10 v10.4.1
+	github.com/go-playground/validator/v10 v10.6.1
 	github.com/go-redis/redis/v8 v8.7.1
 	github.com/gofiber/fiber/v2 v2.5.0
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
