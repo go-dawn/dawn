@@ -14,13 +14,11 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/json-iterator/go v1.1.10
 	github.com/kiyonlin/klog v1.1.1
-	github.com/klauspost/compress v1.11.12 // indirect
 	github.com/mattn/go-sqlite3 v1.14.6 // indirect
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/bytebufferpool v1.0.0
-	github.com/valyala/fasthttp v1.22.0
-	golang.org/x/sys v0.0.0-20210309040221-94ec62e08169 // indirect
+	github.com/valyala/fasthttp v1.27.0
 	gorm.io/driver/mysql v1.0.4
 	gorm.io/driver/postgres v1.0.8
 	gorm.io/driver/sqlite v1.1.4
