@@ -7,7 +7,7 @@ require (
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.4.1
-	github.com/go-redis/redis/v8 v8.7.1
+	github.com/go-redis/redis/v8 v8.11.2
 	github.com/gofiber/fiber/v2 v2.5.0
 	github.com/jackc/pgproto3/v2 v2.0.7 // indirect
 	github.com/jinzhu/copier v0.0.0-20201025035756-632e723a6687
@@ -20,6 +20,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/valyala/bytebufferpool v1.0.0
 	github.com/valyala/fasthttp v1.22.0
+	go.opentelemetry.io/otel v0.18.0 // indirect
 	golang.org/x/sys v0.0.0-20210309040221-94ec62e08169 // indirect
 	gorm.io/driver/mysql v1.0.4
 	gorm.io/driver/postgres v1.0.8
